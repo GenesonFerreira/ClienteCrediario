@@ -1,28 +1,20 @@
-package com.cadcliente.clientecrediario.model;
+package com.cadcliente.clientecrediario.DTOs;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "clientes")
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class ClienteRequestDTO {
 
     @NotBlank(message = "Nome é obrigatório")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     private String nome;
 
     @NotBlank(message = "CPF é obrigatório")
-    @Column(unique = true, nullable = false)
     @Pattern(regexp = "\\d{11}", message = "CPF deve conter exatamente 11 dígitos numéricos")
     private String cpf;
 
-    @Size(max = 20, message = "RG deve ter no máximo 20 caracteres")
+    @Size(max = 20)
     private String rg;
 
     @Pattern(regexp = "\\d{10,11}", message = "Telefone deve conter 10 ou 11 dígitos")

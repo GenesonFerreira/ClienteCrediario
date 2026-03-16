@@ -12,14 +12,18 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Erro 404 - Cliente não encontrado
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFound(NoSuchElementException ex) {
         return Map.of("erro", ex.getMessage());
     }
 
-    // Erro 400 - Falhas de validação (@Valid)
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleIllegalArgument(IllegalArgumentException ex) {
+        return Map.of("erro", ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationErrors(MethodArgumentNotValidException ex) {
@@ -30,14 +34,12 @@ public class GlobalExceptionHandler {
         return erros;
     }
 
-    // Erro 409 - CPF duplicado
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleConflict(Exception ex) {
         return Map.of("erro", "CPF já cadastrado na base de dados.");
     }
 
-    // Erro 500 - Qualquer outro erro inesperado
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleGeneric(Exception ex) {

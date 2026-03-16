@@ -3,6 +3,9 @@ package com.cadcliente.clientecrediario.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -33,4 +36,8 @@ public class Cliente {
 
     @PositiveOrZero(message = "Rendimento mensal não pode ser negativo")
     private double rendimentoMensal;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Emprestimo> emprestimos;
 }
